@@ -1,0 +1,13 @@
+.profile__pic {
+  aspect-ratio: 1 / 1;
+  max-width: 120px;
+  border-radius: 100%;
+  object-fit: cover;
+  z-index: 2;
+}
+
+@media screen and (max-width: 415px) {
+  .profile__pic {
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,11 @@
+.popup__container_type_full-image {
+  padding: 0;
+  margin: auto;
+  align-self: center;
+  justify-self: center;
+  max-width: max-content;
+  width: 100%;
+  max-height: 75vh;
+  background-color: transparent;
+  box-shadow: none;
+}
