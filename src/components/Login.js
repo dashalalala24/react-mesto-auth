@@ -28,12 +28,7 @@ function Login({ handleLogin, errorMesage }) {
   return (
     <section className="auth">
       <h3 className="auth__title">Вход</h3>
-      <form
-        className="auth__form"
-        name="auth"
-        noValidate
-        onSubmit={handleSubmit}
-      >
+      <form className="auth__form" name="auth" onSubmit={handleSubmit}>
         <div className="auth__inputs">
           <input
             className="auth__input auth__input_type_email"

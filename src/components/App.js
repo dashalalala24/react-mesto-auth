@@ -104,7 +104,7 @@ function App() {
         setLoggedIn(true);
         navigate('/', { replace: true });
         setUserData({
-          email: userData.email,
+          email: email,
         });
         setErrorMesage('');
         console.log(userData.email);
