@@ -45,7 +45,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    checkToken();
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth
+        .getContent(jwt)
+        .then((userData) => {
+          setLoggedIn(true);
+          setUserData({ email: userData.email });
+          navigate('/', { replace: true });
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
   useEffect(() => {
@@ -60,7 +70,7 @@ function App() {
       api
         .getInitialCards()
         .then((cards) => {
-          setCards(cards);
+          setCards(cards.data);
         })
         .catch((error) => console.log(error));
     }
@@ -70,15 +80,14 @@ function App() {
     auth
       .register(email, password)
       .then((userData) => {
-        console.log(userData.data.email);
-        setUserData({ email: userData.data.email });
+        setUserData({ email: userData.email });
         setRegistrationStatus({
           icon: successIcon,
           message: 'Вы успешно зарегистрировались!',
         });
       })
       .then(() => {
-        navigate('/sign-in', { replace: true });
+        navigate('/signin', { replace: true });
         setErrorMesage('');
       })
       .catch((error) => {
@@ -97,7 +106,6 @@ function App() {
     auth
       .login(email, password)
       .then((data) => {
-        // console.log(data);
         if (data.token) {
           localStorage.setItem('jwt', data.token);
         }
@@ -107,26 +115,17 @@ function App() {
           email: email,
         });
         setErrorMesage('');
-        console.log(userData.email);
       })
       .catch((error) => {
         setErrorMesage(`Ой, всё сломалось :( ${error}`);
       });
   }
 
-  function checkToken() {
-    const jwt = localStorage.getItem('jwt');
-
-    if (jwt) {
-      return auth
-        .getContent(jwt)
-        .then((userData) => {
-          setLoggedIn(true);
-          setUserData({ email: userData.data.email });
-          navigate('/', { replace: true });
-        })
-        .catch((err) => console.log(err));
-    }
+  function signOut() {
+    localStorage.removeItem('jwt');
+    navigate('/signin', { replace: true });
+    setLoggedIn(false);
+    setUserData('');
   }
 
   function handleEditAvatarClick() {
@@ -146,10 +145,6 @@ function App() {
     setRemovedCard(card);
   }
 
-  // function handleInfoTooltipOpen() {
-  //   setInfoTooltipOpen(true);
-  // }
-
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -159,6 +154,12 @@ function App() {
     setSelectedCard(null);
     setRemovedCard(null);
   }
+
+  const handleOverlayClick = (evt) => {
+    if (evt.target === evt.currentTarget) {
+      closeAllPopups();
+    }
+  };
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -220,7 +221,7 @@ function App() {
     api
       .addNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([...cards, newCard.data]);
         closeAllPopups();
       })
       .catch((error) => console.log(error))
@@ -229,12 +230,15 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header userData={userData} />
+      <div className='page'>
+        <Header
+          userData={userData}
+          onSignOut={signOut}
+        />
 
         <Routes>
           <Route
-            path="/"
+            path='/'
             element={
               <ProtectedRoute
                 loggedIn={loggedIn}
@@ -247,17 +251,19 @@ function App() {
                 onCardLike={handleCardLike}
                 onCardDelete={handleConfirmDeletionClick}
               />
-            }
-          ></Route>
+            }></Route>
 
           <Route
-            path="/sign-in"
+            path='/signin'
             element={
-              <Login handleLogin={handleLogin} errorMesage={errorMesage} />
+              <Login
+                handleLogin={handleLogin}
+                errorMesage={errorMesage}
+              />
             }
           />
           <Route
-            path="/sign-up"
+            path='/signup'
             element={
               <Register
                 handleRegister={handleRegister}
@@ -265,7 +271,10 @@ function App() {
               />
             }
           />
-          <Route path="*" element={loggedIn ? <Main /> : <Register />} />
+          <Route
+            path='*'
+            element={loggedIn ? <Main /> : <Register />}
+          />
         </Routes>
 
         <Footer />
@@ -273,6 +282,7 @@ function App() {
         <InfoToolTip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
           message={registrationStatus.message}
           statusIcon={registrationStatus.icon}
         />
@@ -280,6 +290,7 @@ function App() {
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
           onUpdateAvatar={handleUpdateAvatar}
           onLoading={isLoading}
         />
@@ -287,6 +298,7 @@ function App() {
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
           onUpdateUser={handleUpdateUser}
           onLoading={isLoading}
         />
@@ -294,6 +306,7 @@ function App() {
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
           onAddPlace={handleAddPlaceSubmit}
           onLoading={isLoading}
         />
@@ -301,12 +314,17 @@ function App() {
         <ConfirmDeletion
           isOpen={isConfirmDeletionPopupOpen}
           onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
           onCardDelete={handleCardDelete}
           card={removedCard}
           onLoading={isLoading}
         />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          onOverlayClick={handleOverlayClick}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

@@ -1,26 +1,26 @@
 import React from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import headerLogo from '../images/logo.svg';
 
-function Header({ userData }) {
-  const navigate = useNavigate();
-  function logOut() {
-    localStorage.removeItem('jwt');
-    navigate('/sign-in');
-  }
-
+function Header({ userData, onSignOut }) {
   return (
-    <header className="header">
-      <Link to="/">
-        <img className="logo" src={headerLogo} alt="Логотип сервиса Mesto" />
+    <header className='header'>
+      <Link to='/'>
+        <img
+          className='logo'
+          src={headerLogo}
+          alt='Логотип сервиса Mesto'
+        />
       </Link>
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
-            <div className="header__container">
-              <p className="header__email">{userData.email}</p>
-              <button className="header__logout" onClick={logOut}>
+            <div className='header__container'>
+              <p className='header__email'>{userData.email}</p>
+              <button
+                className='header__logout'
+                onClick={onSignOut}>
                 Выйти
               </button>
             </div>
@@ -28,18 +28,22 @@ function Header({ userData }) {
         />
 
         <Route
-          path="/sign-in"
+          path='/signin'
           element={
-            <Link to="/sign-up" className="header__link">
+            <Link
+              to='/signup'
+              className='header__link'>
               Регистрация
             </Link>
           }
         />
 
         <Route
-          path="sign-up"
+          path='signup'
           element={
-            <Link to="/sign-in" className="header__link">
+            <Link
+              to='/signin'
+              className='header__link'>
               Войти
             </Link>
           }
