@@ -2,7 +2,7 @@
 
 **_[Cсылка на проект](https://dashalalala24.github.io/react-mesto-auth/)_**
 
----
+___
 
 ### Описание:
 
