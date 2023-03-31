@@ -10,6 +10,8 @@ function PopupWithForm({
   onClose,
   onOverlayClick,
   onSubmit,
+  isValid,
+  // onLoading,
 }) {
   return (
     <div
@@ -27,11 +29,13 @@ function PopupWithForm({
           method='get'
           name={formName}
           onSubmit={onSubmit}
+          // onLoading={onLoading}
           noValidate>
           {children}
           <button
-            className='popup__button'
-            type='submit'>
+            className={`popup__button ${!isValid ? 'popup__button_disabled' : ''}`}
+            type='submit'
+            disabled={!isValid}>
             {buttonText}
           </button>
         </form>

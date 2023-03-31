@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
-function Login({ handleLogin, errorMesage }) {
-  const [userData, setUserData] = useState({
+import useFormAndValidation from '../hooks/useFormAndValidation';
+
+function Login({ handleLogin }) {
+  const initialValues = {
     email: '',
     password: '',
-  });
+  };
 
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  }
+  const { values, errors, isValid, handleChange, setIsValid, resetForm } =
+    useFormAndValidation(initialValues);
 
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    const { email, password } = userData;
+    const { email, password } = values;
     if (!email || !password) {
       return;
     }
-    handleLogin({ email, password });
+    handleLogin({ email, password }).then(() => resetForm());
   }
+
+  useEffect(() => {
+    setIsValid(false);
+  }, []);
+
+  // const [userData, setUserData] = useState({
+  //   email: '',
+  //   password: '',
+  // });
+
+  // function handleChange(evt) {
+  //   const { name, value } = evt.target;
+
+  //   setUserData({
+  //     ...userData,
+  //     [name]: value,
+  //   });
+  // }
 
   return (
     <section className='auth'>
@@ -41,13 +55,13 @@ function Login({ handleLogin, errorMesage }) {
             placeholder='Email'
             autoComplete='off'
             required
-            value={userData.email || ''}
+            value={values.email || ''}
             onChange={handleChange}
           />
           <span
             id='email-input-error'
             className='auth__error email-input-error'>
-            {errorMesage}
+            {errors.email}
           </span>
           <input
             className='auth__input auth__input_type_password'
@@ -57,21 +71,23 @@ function Login({ handleLogin, errorMesage }) {
             placeholder='Пароль'
             autoComplete='off'
             required
-            value={userData.password || ''}
+            value={values.password || ''}
             onChange={handleChange}
           />
           <span
             id='password-input-error'
             className='auth__error password-input-error'>
-            {errorMesage}
+            {errors.password}
           </span>
         </div>
         <button
-          className='auth__button'
-          type='submit'>
+          className={`auth__button ${!isValid ? 'auth__button_disabled' : ''}`}
+          type='submit'
+          disabled={!isValid}>
           Войти
         </button>
       </form>
+      <p className='auth__link'></p>
     </section>
   );
 }

@@ -1,26 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useFormAndValidation from '../hooks/useFormAndValidation';
 
-function Register({ handleRegister, errorMesage }) {
-  const [userData, setUserData] = useState({
+function Register({ handleRegister }) {
+  const initialValues = {
     email: '',
     password: '',
-  });
+  };
 
-  function handleChange(evt) {
-    const { name, value } = evt.target;
+  const { values, errors, isValid, handleChange, setIsValid, resetForm } =
+    useFormAndValidation(initialValues);
 
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  }
+  useEffect(() => {
+    setIsValid(false);
+  }, []);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    let { email, password } = userData;
-    handleRegister(email, password);
+    let { email, password } = values;
+    handleRegister(email, password).then(() => resetForm());
   }
+
+  // const [userData, setUserData] = useState({
+  //   email: '',
+  //   password: '',
+  // });
+
+  // function handleChange(evt) {
+  //   const { name, value } = evt.target;
+
+  //   setUserData({
+  //     ...userData,
+  //     [name]: value,
+  //   });
+  // }
 
   return (
     <section className='auth'>
@@ -38,13 +51,13 @@ function Register({ handleRegister, errorMesage }) {
             placeholder='Email'
             autoComplete='off'
             required
-            value={userData.email || ''}
+            value={values.email || ''}
             onChange={handleChange}
           />
           <span
             id='email-input-error'
             className='auth__error email-input-error'>
-            {errorMesage}
+            {errors.email}
           </span>
           <input
             className='auth__input auth__input_type_password'
@@ -54,18 +67,19 @@ function Register({ handleRegister, errorMesage }) {
             placeholder='Пароль'
             autoComplete='off'
             required
-            value={userData.password || ''}
+            value={values.password || ''}
             onChange={handleChange}
           />
           <span
             id='password-input-error'
             className='auth__error password-input-error'>
-            {errorMesage}
+            {errors.password}
           </span>
         </div>
         <button
-          className='auth__button'
-          type='submit'>
+          className={`auth__button ${!isValid ? 'auth__button_disabled' : ''}`}
+          type='submit'
+          disabled={!isValid}>
           Зарегистрироваться
         </button>
       </form>

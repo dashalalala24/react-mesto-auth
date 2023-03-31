@@ -1,13 +1,6 @@
 import PopupWithForm from './PopupWithForm';
 
-function ConfirmDeletion({
-  isOpen,
-  onClose,
-  onOverlayClick,
-  onCardDelete,
-  card,
-  onLoading,
-}) {
+function ConfirmDeletion({ isOpen, onClose, onOverlayClick, onCardDelete, card, onLoading }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     onCardDelete(card);
@@ -24,6 +17,7 @@ function ConfirmDeletion({
       formName='delete'
       onLoading={onLoading}
       buttonText={onLoading ? `Удаление...` : `Удалить`}
+      isValid={true}
     />
   );
 }

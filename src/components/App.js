@@ -26,7 +26,6 @@ function App() {
   const [userData, setUserData] = useState({
     email: '',
   });
-  const [errorMesage, setErrorMesage] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState({
     icon: '',
     message: '',
@@ -88,14 +87,12 @@ function App() {
       })
       .then(() => {
         navigate('/signin', { replace: true });
-        setErrorMesage('');
       })
-      .catch((error) => {
+      .catch(() => {
         setRegistrationStatus({
           icon: failIcon,
           message: 'Что-то пошло не так! Попробуйте ещё раз.',
         });
-        setErrorMesage(`Ой, всё сломалось :( ${error}`);
       })
       .finally(() => {
         setInfoTooltipOpen(true);
@@ -114,10 +111,9 @@ function App() {
         setUserData({
           email: email,
         });
-        setErrorMesage('');
       })
       .catch((error) => {
-        setErrorMesage(`Ой, всё сломалось :( ${error}`);
+        console.log(`Ой, всё сломалось :( ${error}`);
       });
   }
 
@@ -258,21 +254,11 @@ function App() {
 
           <Route
             path='/signin'
-            element={
-              <Login
-                handleLogin={handleLogin}
-                errorMesage={errorMesage}
-              />
-            }
+            element={<Login handleLogin={handleLogin} />}
           />
           <Route
             path='/signup'
-            element={
-              <Register
-                handleRegister={handleRegister}
-                errorMesage={errorMesage}
-              />
-            }
+            element={<Register handleRegister={handleRegister} />}
           />
           <Route
             path='*'
