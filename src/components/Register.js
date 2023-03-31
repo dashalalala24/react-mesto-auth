@@ -18,7 +18,8 @@ function Register({ handleRegister }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     let { email, password } = values;
-    handleRegister(email, password).then(() => resetForm());
+    handleRegister(email, password);
+    resetForm();
   }
 
   // const [userData, setUserData] = useState({

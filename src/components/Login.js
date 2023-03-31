@@ -18,7 +18,8 @@ function Login({ handleLogin }) {
     if (!email || !password) {
       return;
     }
-    handleLogin({ email, password }).then(() => resetForm());
+    handleLogin({ email, password });
+    resetForm();
   }
 
   useEffect(() => {
