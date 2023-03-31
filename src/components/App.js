@@ -35,14 +35,14 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  const [isConfirmDeletionPopupOpen, setConfirmDeletionPopupOpen] =
-    useState(false);
+  const [isConfirmDeletionPopupOpen, setConfirmDeletionPopupOpen] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [removedCard, setRemovedCard] = useState(null);
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isBurgerActive, setIsBurgerActive] = useState(false);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -124,8 +124,13 @@ function App() {
   function signOut() {
     localStorage.removeItem('jwt');
     navigate('/signin', { replace: true });
+    setIsBurgerActive(false);
     setLoggedIn(false);
     setUserData('');
+  }
+
+  function handleOpenHeader() {
+    setIsBurgerActive(!isBurgerActive);
   }
 
   function handleEditAvatarClick() {
@@ -170,9 +175,7 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) =>
-          state.filter((element) => element._id !== card._id)
-        );
+        setCards((state) => state.filter((element) => element._id !== card._id));
         closeAllPopups();
       })
       .catch((error) => console.log(error))
@@ -185,9 +188,7 @@ function App() {
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) =>
-          state.map((element) => (element._id === card._id ? newCard : element))
-        );
+        setCards((state) => state.map((element) => (element._id === card._id ? newCard : element)));
       })
       .catch((error) => console.log(error));
   }
@@ -234,6 +235,8 @@ function App() {
         <Header
           userData={userData}
           onSignOut={signOut}
+          onOpenHeader={handleOpenHeader}
+          isBurgerActive={isBurgerActive}
         />
 
         <Routes>

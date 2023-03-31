@@ -10,7 +10,6 @@ function PopupWithForm({
   onClose,
   onOverlayClick,
   onSubmit,
-  // onLoading,
 }) {
   return (
     <div
@@ -28,7 +27,6 @@ function PopupWithForm({
           method='get'
           name={formName}
           onSubmit={onSubmit}
-          // onLoading={onLoading}
           noValidate>
           {children}
           <button

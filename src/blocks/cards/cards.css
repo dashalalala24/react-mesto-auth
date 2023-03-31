@@ -10,14 +10,14 @@
   justify-content: center;
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 767px) {
   .cards {
     width: calc(969 / 1280 * 100%);
     min-height: 30vh;
   }
-}
+} */
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 767px) {
   .cards {
     display: flex;
     flex-direction: column;

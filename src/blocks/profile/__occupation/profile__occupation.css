@@ -19,7 +19,7 @@
   }
 }
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 767px) {
   .profile__occupation {
     text-align: center;
     padding-top: 7px;
