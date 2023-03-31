@@ -1,2 +1,16 @@
 .header__email {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 305px;
+}
+
+@media screen and (max-width: 767px) {
+  .header__email {
+    max-width: 260px;
+    padding: 40px 0 18px;
+    margin: 0;
+    font-size: 18px;
+    line-height: 22px;
+  }
 }

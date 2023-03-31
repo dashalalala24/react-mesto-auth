@@ -3,11 +3,12 @@
   display: grid;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: repeat(3, auto);
-  grid-template-areas: 'profile__pic-container profile__name profile__edit-button'
-  'profile__pic-container profile__occupation .';
+  grid-template-areas:
+    'profile__pic-container profile__name profile__edit-button'
+    'profile__pic-container profile__occupation .';
 }
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 767px) {
   .profile__info {
     display: flex;
     flex-direction: column;

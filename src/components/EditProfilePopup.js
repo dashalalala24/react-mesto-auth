@@ -2,7 +2,13 @@ import { useState, useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
+function EditProfilePopup({
+  isOpen,
+  onClose,
+  onOverlayClick,
+  onUpdateUser,
+  onLoading,
+}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -32,50 +38,49 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
 
   return (
     <PopupWithForm
-      name="edit-profile"
-      title="Редактировать профиль"
-      formName="user"
+      name='edit-profile'
+      title='Редактировать профиль'
+      formName='user'
       isOpen={isOpen}
       onClose={onClose}
+      onOverlayClick={onOverlayClick}
       onSubmit={handleSubmit}
       onLoading={onLoading}
       buttonText={onLoading ? `Сохранение...` : `Сохранить`}
       children={
         <>
           <input
-            className="popup__input popup__input_type_username"
-            id="username-input"
-            type="text"
-            name="name"
-            placeholder="Имя"
-            minLength="2"
-            maxLength="40"
-            autoComplete="off"
+            className='popup__input popup__input_type_username'
+            id='username-input'
+            type='text'
+            name='name'
+            placeholder='Имя'
+            minLength='2'
+            maxLength='40'
+            autoComplete='off'
             required
             value={name || ''}
             onChange={handleNameChange}
           />
           <span
-            id="username-input-error"
-            className="popup__error username-input-error"
-          ></span>
+            id='username-input-error'
+            className='popup__error username-input-error'></span>
           <input
-            className="popup__input popup__input_type_occupation"
-            id="occupation-input"
-            type="text"
-            name="about"
-            placeholder="О себе"
-            minLength="2"
-            maxLength="200"
-            autoComplete="off"
+            className='popup__input popup__input_type_occupation'
+            id='occupation-input'
+            type='text'
+            name='about'
+            placeholder='О себе'
+            minLength='2'
+            maxLength='200'
+            autoComplete='off'
             required
             value={description || ''}
             onChange={handleDescriptionChange}
           />
           <span
-            id="occupation-input-error"
-            className="popup__error occupation-input-error"
-          ></span>
+            id='occupation-input-error'
+            className='popup__error occupation-input-error'></span>
         </>
       }
     />

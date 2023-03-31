@@ -2,6 +2,7 @@ class Api {
   constructor(data) {
     this._serverURL = data.serverURL;
     this._headers = data.headers;
+    this._credentials = data.credentials;
   }
 
   _checkRes(res) {
@@ -14,20 +15,34 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._serverURL}/cards`, {
-      headers: this._headers,
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkRes);
   }
 
   getUserInfo() {
     return fetch(`${this._serverURL}/users/me`, {
-      headers: this._headers,
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkRes);
   }
 
   setUserInfo(data) {
     return fetch(`${this._serverURL}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -38,7 +53,11 @@ class Api {
   setProfilePic(data) {
     return fetch(`${this._serverURL}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       }),
@@ -48,7 +67,11 @@ class Api {
   addNewCard(data) {
     return fetch(`${this._serverURL}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link,
@@ -59,24 +82,28 @@ class Api {
   changeLikeCardStatus(cardId, isLiked) {
     return fetch(`${this._serverURL}/cards/${cardId}/likes`, {
       method: `${isLiked ? 'PUT' : 'DELETE'}`,
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkRes);
   }
 
   deleteCard(cardId) {
     return fetch(`${this._serverURL}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkRes);
   }
 }
 
 const apiConfig = {
-  serverURL: 'https://mesto.nomoreparties.co/v1/cohort-54',
-  headers: {
-    authorization: '9732efc5-811e-490a-92fd-fca287deba43',
-    'Content-Type': 'application/json',
-  },
+  serverURL: 'https://api.mesto.dashalalala24.nomoredomains.work',
 };
 
 const api = new Api(apiConfig);

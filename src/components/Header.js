@@ -1,47 +1,60 @@
 import React from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import headerLogo from '../images/logo.svg';
 
-function Header({ userData }) {
-  const navigate = useNavigate();
-  function logOut() {
-    localStorage.removeItem('jwt');
-    navigate('/sign-in');
-  }
-
+function Header({ userData, onSignOut, onOpenHeader, isBurgerActive }) {
   return (
-    <header className="header">
-      <Link to="/">
-        <img className="logo" src={headerLogo} alt="Логотип сервиса Mesto" />
+    <header className={`header ${isBurgerActive ? 'header_active' : ''}`}>
+      <Link to='/'>
+        <img
+          className='logo'
+          src={headerLogo}
+          alt='Логотип сервиса Mesto'
+        />
       </Link>
       <Routes>
         <Route
-          path="/"
+          path='/signin'
           element={
-            <div className="header__container">
-              <p className="header__email">{userData.email}</p>
-              <button className="header__logout" onClick={logOut}>
-                Выйти
-              </button>
-            </div>
-          }
-        />
-
-        <Route
-          path="/sign-in"
-          element={
-            <Link to="/sign-up" className="header__link">
+            <Link
+              to='/signup'
+              className='header__link'>
               Регистрация
             </Link>
           }
         />
 
         <Route
-          path="sign-up"
+          path='signup'
           element={
-            <Link to="/sign-in" className="header__link">
+            <Link
+              to='/signin'
+              className='header__link'>
               Войти
             </Link>
+          }
+        />
+        <Route
+          path='/'
+          element={
+            <>
+              <div
+                className={`header__container ${isBurgerActive ? 'header__container_active' : ''}`}>
+                <p className='header__email'>{userData.email}</p>
+                <button
+                  className='header__logout'
+                  onClick={onSignOut}>
+                  Выйти
+                </button>
+              </div>
+              <div
+                className={`header__burger ${isBurgerActive ? 'header__burger_active' : ''}`}
+                onClick={onOpenHeader}>
+                <span className='header__burger-line'></span>
+                <span className='header__burger-line'></span>
+                <span className='header__burger-line'></span>
+              </div>
+            </>
           }
         />
       </Routes>

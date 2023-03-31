@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
+function AddPlacePopup({
+  isOpen,
+  onClose,
+  onOverlayClick,
+  onAddPlace,
+  onLoading,
+}) {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
 
@@ -29,48 +35,47 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
 
   return (
     <PopupWithForm
-      name="new-card"
-      title="Новое место"
-      formName="card"
+      name='new-card'
+      title='Новое место'
+      formName='card'
       isOpen={isOpen}
       onClose={onClose}
+      onOverlayClick={onOverlayClick}
       onSubmit={handleSubmit}
       onLoading={onLoading}
       buttonText={onLoading ? `Создание...` : `Создать`}
       children={
         <>
           <input
-            className="popup__input popup__input_type_card-name"
-            id="cardname-input"
-            type="text"
-            name="name"
-            placeholder="Название"
-            minLength="2"
-            maxLength="30"
-            autoComplete="off"
+            className='popup__input popup__input_type_card-name'
+            id='cardname-input'
+            type='text'
+            name='name'
+            placeholder='Название'
+            minLength='2'
+            maxLength='30'
+            autoComplete='off'
             required
             value={name}
             onChange={handleNameChange}
           />
           <span
-            id="cardname-input-error"
-            className="popup__error cardname-input-error"
-          ></span>
+            id='cardname-input-error'
+            className='popup__error cardname-input-error'></span>
           <input
-            className="popup__input popup__input_type_card-link"
-            id="link-input"
-            type="url"
-            name="link"
-            placeholder="Ссылка на картинку"
-            autoComplete="off"
+            className='popup__input popup__input_type_card-link'
+            id='link-input'
+            type='url'
+            name='link'
+            placeholder='Ссылка на картинку'
+            autoComplete='off'
             required
             value={link}
             onChange={handleLinkChange}
           />
           <span
-            id="link-input-error"
-            className="popup__error link-input-error"
-          ></span>
+            id='link-input-error'
+            className='popup__error link-input-error'></span>
         </>
       }
     />

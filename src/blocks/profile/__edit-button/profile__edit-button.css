@@ -6,13 +6,13 @@
   grid-area: profile__edit-button;
   align-self: end;
   background: url(../../../images/edit-button.svg) center no-repeat;
-  border: 1px solid #FFFFFF;
-  transition: opacity .3s;
+  border: 1px solid #ffffff;
+  transition: opacity 0.3s;
   cursor: pointer;
 }
 
 .profile__edit-button:hover {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 1024px) {
@@ -22,13 +22,13 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 767px) {
   .profile__edit-button {
     margin: 0 0 12px 9px;
   }
-}
+} */
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 767px) {
   .profile__edit-button {
     margin: 0;
     position: relative;
